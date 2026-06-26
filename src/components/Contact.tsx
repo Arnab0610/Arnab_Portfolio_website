@@ -33,18 +33,20 @@ export default function Contact() {
 
         {/* Contact Links Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-          {/* Email Card */}
-          <motion.a
-            href="mailto:arnabmondal.dev@gmail.com"
-            whileHover={{ y: -5 }}
-            className="group p-8 bg-white/5 border border-white/10 rounded-3xl flex flex-col items-center gap-4 transition-all hover:bg-white/10"
-          >
-            <div className="w-16 h-16 rounded-2xl bg-blue-600/20 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
-              <FaEnvelope size={28} />
-            </div>
-            <span className="text-gray-500 font-mono text-xs uppercase tracking-widest">Send an Email</span>
-            <span className="text-white text-lg md:text-xl font-bold">arnabmondal0610@gmail.com</span>
-          </motion.a>
+          {/* Email Card - Text Wrap Fixed */}
+            <motion.a
+              href="mailto:arnabmondal0610@gmail.com"
+              whileHover={{ y: -5 }}
+              className="group p-8 bg-white/5 border border-white/10 rounded-3xl flex flex-col items-center gap-4 transition-all hover:bg-white/10 max-w-full overflow-hidden"
+            >
+              <div className="w-16 h-16 rounded-2xl bg-blue-600/20 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                <FaEnvelope size={28} />
+              </div>
+              <span className="text-gray-500 font-mono text-xs uppercase tracking-widest">Send an Email</span>
+              <span className="text-white text-base md:text-xl font-bold break-all max-w-full text-center px-2">
+                arnabmondal0610@gmail.com
+              </span>
+            </motion.a>
 
           {/* Download CV Card */}
           <motion.a

@@ -49,16 +49,16 @@ export default function Dock() {
   const mouseX = useMotionValue(Infinity);
 
   return (
-    <motion.div
-      onMouseMove={(e) => mouseX.set(e.pageX)}
-      onMouseLeave={() => mouseX.set(Infinity)}
-      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex h-16 items-end gap-3 rounded-2xl border border-white/10 bg-black/40 px-4 pb-3 backdrop-blur-xl shadow-2xl"
-    >
-      {DOCK_ITEMS.map((item) => (
-        <DockIcon key={item.id} mouseX={mouseX} item={item} />
-      ))}
-    </motion.div>
-  );
+  <motion.div
+    onMouseMove={(e) => mouseX.set(e.pageX)}
+    onMouseLeave={() => mouseX.set(Infinity)}
+    className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex h-16 items-end gap-2 md:gap-3 rounded-2xl border border-white/10 bg-black/40 px-3 md:px-4 pb-3 backdrop-blur-xl shadow-2xl max-w-[95vw] md:max-w-full"
+  >
+    {DOCK_ITEMS.map((item) => (
+      <DockIcon key={item.id} mouseX={mouseX} item={item} />
+    ))}
+  </motion.div>
+);
 }
 
 function DockIcon({ mouseX, item }: { mouseX: MotionValue; item: (typeof DOCK_ITEMS)[0] }) {
