@@ -95,9 +95,9 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <p className="text-blue-400 font-bold text-[10px] md:text-sm mb-6 tracking-[0.2em] md:tracking-[0.6em] uppercase opacity-80 whitespace-nowrap">
-  &lt; Creative Web Developer /&gt;
-</p>
+          <p className="text-blue-400 font-bold text-[9px] sm:text-xs md:text-sm mb-6 tracking-[0.15em] sm:tracking-[0.3em] md:tracking-[0.6em] uppercase opacity-80 whitespace-nowrap block clear-both width-full text-center">
+            &lt; Creative Web Developer /&gt;
+          </p>
 
           <h1 className="text-6xl md:text-[10rem] font-black text-white mb-6 tracking-tighter leading-none">
             <TypeAnimation
