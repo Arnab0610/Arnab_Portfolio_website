@@ -241,13 +241,13 @@ export default function Projects() {
 
   return (
     <section className="relative z-20 bg-[#0a0a0a] min-h-screen py-32 px-4 md:px-12 overflow-hidden" id="projects">
-      {/* Background Ambience */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-[-20%] right-[-10%] w-150 h-150 bg-purple-600/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-125 h-125 bg-blue-600/10 rounded-full blur-[100px]" />
-      </div>
+  {/* Background Ambience - Fixed Side Scroll */}
+  <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+    <div className="absolute top-[-20%] right-[-10%] w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-purple-600/10 rounded-full blur-[120px]" />
+    <div className="absolute bottom-[-10%] left-[-10%] w-[250px] sm:w-[500px] h-[250px] sm:h-[500px] bg-blue-600/10 rounded-full blur-[100px]" />
+  </div>
 
-      <div className="max-w-7xl mx-auto relative">
+  <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
            initial={{ opacity: 0, y: 30 }}
            whileInView={{ opacity: 1, y: 0 }}
