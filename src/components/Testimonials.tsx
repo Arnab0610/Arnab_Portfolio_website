@@ -16,31 +16,32 @@ export default function About() {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
-          {/* Left Column: Image with Nomination Badge Effect */}
+          {/* Left Column: Image Container with Strict Mobile Height Layout Fixed */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="relative aspect-square max-w-md mx-auto lg:mx-0 group"
+            className="relative w-full max-w-md h-[350px] sm:h-[450px] md:h-[500px] mx-auto lg:mx-0 group mb-8 lg:mb-0"
           >
-            <div className="absolute inset-0 bg-linear-to-tr from-blue-500 to-purple-500 rounded-3xl rotate-6 group-hover:rotate-3 transition-transform duration-500 opacity-20" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-blue-500 to-purple-500 rounded-3xl rotate-6 group-hover:rotate-3 transition-transform duration-500 opacity-20" />
             <div className="relative h-full w-full bg-white/5 border border-white/10 rounded-3xl overflow-hidden backdrop-blur-sm shadow-2xl">
               <Image 
                 src="/photo.jpeg" 
                 alt="Arnab Mondal" 
-                fill // Ei fill proparți-ti obossoi thakte hobe
+                fill 
+                priority
                 className="object-cover grayscale-0 hover:grayscale transition-all duration-700"
               />
             </div>
 
-            {/* Nomination Badge */}
+            {/* Nomination Badge Responsive Positioning */}
             <motion.div 
               initial={{ scale: 0 }}
               whileInView={{ scale: 1 }}
-              className="absolute -bottom-6 -right-6 bg-white text-black p-4 rounded-2xl shadow-xl z-20 max-w-40 border-2 border-purple-500"
+              className="absolute -bottom-4 -right-4 bg-white text-black p-3 rounded-xl shadow-xl z-20 max-w-[130px] sm:max-w-40 border-2 border-purple-500"
             >
-              <p className="text-[10px] font-bold uppercase tracking-wider text-purple-600 mb-1">Recognition</p>
-              <p className="text-xs font-bold leading-tight">Creative Minds 2024 Nominee in Website Design</p>
+              <p className="text-[9px] font-bold uppercase tracking-wider text-purple-600 mb-0.5">Recognition</p>
+              <p className="text-[10px] font-black leading-tight">Creative Minds 2024 Nominee in Website Design</p>
             </motion.div>
           </motion.div>
 
