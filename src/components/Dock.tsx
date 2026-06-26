@@ -7,9 +7,10 @@ import {
   useTransform,
   MotionValue,
 } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 
+// আইকনগুলো লুসিড-রিঅ্যাক্ট বা এসভিজি দিয়ে তৈরি
 const Icons = {
   Home: (props: any) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -46,63 +47,21 @@ const DOCK_ITEMS = [
 
 export default function Dock() {
   const mouseX = useMotionValue(Infinity);
-  const [activeSection, setActiveSection] = useState("home");
-
-  // Automatically track scroll and update active menu item indicator
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight / 3;
-
-      for (const item of DOCK_ITEMS) {
-        if (item.external) continue;
-        const el = document.getElementById(item.id);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(item.id);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-fit px-4 pointer-events-none">
-      <motion.div
-        onMouseMove={(e) => mouseX.set(e.pageX)}
-        onMouseLeave={() => mouseX.set(Infinity)}
-        className="pointer-events-auto flex h-14 md:h-16 items-end gap-2.5 md:gap-3 rounded-2xl border border-white/10 bg-black/60 px-3 md:px-4 pb-2 md:pb-3 backdrop-blur-xl shadow-2xl max-w-[92vw] overflow-visible"
-      >
-        {DOCK_ITEMS.map((item) => (
-          <DockIcon 
-            key={item.id} 
-            mouseX={mouseX} 
-            item={item} 
-            isActive={activeSection === item.id}
-            onClick={() => !item.external && setActiveSection(item.id)}
-          />
-        ))}
-      </motion.div>
-    </div>
-  );
+  <motion.div
+    onMouseMove={(e) => mouseX.set(e.pageX)}
+    onMouseLeave={() => mouseX.set(Infinity)}
+    className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex h-16 items-end gap-2 md:gap-3 rounded-2xl border border-white/10 bg-black/40 px-3 md:px-4 pb-3 backdrop-blur-xl shadow-2xl max-w-[95vw] md:max-w-full"
+  >
+    {DOCK_ITEMS.map((item) => (
+      <DockIcon key={item.id} mouseX={mouseX} item={item} />
+    ))}
+  </motion.div>
+);
 }
 
-function DockIcon({ 
-  mouseX, 
-  item, 
-  isActive,
-  onClick 
-}: { 
-  mouseX: MotionValue; 
-  item: (typeof DOCK_ITEMS)[0]; 
-  isActive: boolean;
-  onClick: () => void;
-}) {
+function DockIcon({ mouseX, item }: { mouseX: MotionValue; item: (typeof DOCK_ITEMS)[0] }) {
   const ref = useRef<HTMLDivElement>(null);
 
   const distance = useTransform(mouseX, (val) => {
@@ -110,37 +69,20 @@ function DockIcon({
     return val - bounds.x - bounds.width / 2;
   });
 
-  const widthSync = useTransform(distance, [-150, 0, 150], [38, 64, 38]);
-  const desktopWidth = useSpring(widthSync, { mass: 0.1, stiffness: 150, damping: 12 });
+  const widthSync = useTransform(distance, [-150, 0, 150], [40, 70, 40]);
+  const width = useSpring(widthSync, { mass: 0.1, stiffness: 150, damping: 12 });
 
   return (
-    <Link href={item.href} target={item.external ? "_blank" : undefined} className="block" onClick={onClick}>
+    <Link href={item.href} target={item.external ? "_blank" : undefined}>
       <motion.div
         ref={ref}
-        whileTap={{ scale: 0.92 }} // Tactile feedback on click/tap
-        className={`w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-xl md:rounded-full flex flex-col items-center justify-center transition-all duration-300 group relative aspect-square border ${
-          isActive 
-            ? "bg-blue-500/10 border-blue-500/40 shadow-[0_0_15px_rgba(59,130,246,0.2)]" 
-            : "bg-white/5 border-white/10 hover:bg-blue-500/10 hover:border-blue-500/30"
-        }`}
+        style={{ width }}
+        className="aspect-square w-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-blue-500/20 hover:border-blue-500/50 transition-all group relative"
       >
-         <item.icon className={`w-1/2 h-1/2 transition-all ${
-           isActive 
-             ? "text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" 
-             : "text-gray-400 group-hover:text-blue-400"
-         }`} />
+         <item.icon className="w-1/2 h-1/2 text-gray-400 group-hover:text-blue-400 group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)] transition-all" />
          
-         {/* Smooth sliding indicator dot at the bottom of the active icon */}
-         {isActive && (
-           <motion.div 
-             layoutId="activeIndicatorDot"
-             className="absolute bottom-1 w-1 h-1 bg-blue-400 rounded-full shadow-[0_0_8px_rgba(59,130,246,1)]"
-             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-           />
-         )}
-
-         {/* Tooltip (Desktop Only) */}
-         <span className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900/90 text-white text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-lg opacity-0 md:group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-white/10 backdrop-blur-md hidden md:block">
+         {/* Tooltip */}
+         <span className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900/90 text-white text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-white/10 backdrop-blur-md">
             {item.label}
          </span>
       </motion.div>
