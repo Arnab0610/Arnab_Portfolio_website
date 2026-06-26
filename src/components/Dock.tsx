@@ -10,7 +10,6 @@ import {
 import { useRef } from "react";
 import Link from "next/link";
 
-// আইকনগুলো লুসিড-রিঅ্যাক্ট বা এসভিজি দিয়ে তৈরি
 const Icons = {
   Home: (props: any) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -49,16 +48,18 @@ export default function Dock() {
   const mouseX = useMotionValue(Infinity);
 
   return (
-  <motion.div
-    onMouseMove={(e) => mouseX.set(e.pageX)}
-    onMouseLeave={() => mouseX.set(Infinity)}
-    className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex h-16 items-end gap-2 md:gap-3 rounded-2xl border border-white/10 bg-black/40 px-3 md:px-4 pb-3 backdrop-blur-xl shadow-2xl max-w-[95vw] md:max-w-full"
-  >
-    {DOCK_ITEMS.map((item) => (
-      <DockIcon key={item.id} mouseX={mouseX} item={item} />
-    ))}
-  </motion.div>
-);
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-fit px-4 pointer-events-none">
+      <motion.div
+        onMouseMove={(e) => mouseX.set(e.pageX)}
+        onMouseLeave={() => mouseX.set(Infinity)}
+        className="pointer-events-auto flex h-14 md:h-16 items-end gap-2.5 md:gap-3 rounded-2xl border border-white/10 bg-black/60 px-3 md:px-4 pb-2 md:pb-3 backdrop-blur-xl shadow-2xl max-w-[92vw] overflow-visible"
+      >
+        {DOCK_ITEMS.map((item) => (
+          <DockIcon key={item.id} mouseX={mouseX} item={item} />
+        ))}
+      </motion.div>
+    </div>
+  );
 }
 
 function DockIcon({ mouseX, item }: { mouseX: MotionValue; item: (typeof DOCK_ITEMS)[0] }) {
@@ -69,20 +70,21 @@ function DockIcon({ mouseX, item }: { mouseX: MotionValue; item: (typeof DOCK_IT
     return val - bounds.x - bounds.width / 2;
   });
 
-  const widthSync = useTransform(distance, [-150, 0, 150], [40, 70, 40]);
-  const width = useSpring(widthSync, { mass: 0.1, stiffness: 150, damping: 12 });
+  // Dynamic Size Animation logic only perfectly tracks on Desktop md viewports to stop mobile breaking
+  const widthSync = useTransform(distance, [-150, 0, 150], [38, 64, 38]);
+  const desktopWidth = useSpring(widthSync, { mass: 0.1, stiffness: 150, damping: 12 });
 
   return (
-    <Link href={item.href} target={item.external ? "_blank" : undefined}>
+    <Link href={item.href} target={item.external ? "_blank" : undefined} className="block">
       <motion.div
         ref={ref}
-        style={{ width }}
-        className="aspect-square w-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-blue-500/20 hover:border-blue-500/50 transition-all group relative"
+        // Mobile layout enforces absolute size configuration matrix block rules safely
+        className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-xl md:rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-blue-500/20 hover:border-blue-500/50 transition-all group relative aspect-square"
       >
-         <item.icon className="w-1/2 h-1/2 text-gray-400 group-hover:text-blue-400 group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)] transition-all" />
+         <item.icon className="w-1/2 h-1/2 text-gray-400 group-hover:text-blue-400 group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)] transition-all pointer-events-none" />
          
-         {/* Tooltip */}
-         <span className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900/90 text-white text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-white/10 backdrop-blur-md">
+         {/* Tooltip Hidden cleanly on Touch Mobile setups */}
+         <span className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900/90 text-white text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-lg opacity-0 md:group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-white/10 backdrop-blur-md hidden md:block">
             {item.label}
          </span>
       </motion.div>
