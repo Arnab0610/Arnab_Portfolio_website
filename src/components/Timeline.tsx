@@ -67,7 +67,7 @@ export default function Timeline() {
            className="text-center mb-20"
         >
           <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-             Education qualification <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-purple-400">& Experience</span>
+             Education Qualification <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-purple-400">& Experience</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
             Education and professional milestones that shaped my career in technology.
