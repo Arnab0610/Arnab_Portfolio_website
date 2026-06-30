@@ -81,7 +81,7 @@ export default function Timeline() {
       <div className="p-2 bg-blue-500/10 rounded-lg border border-blue-500/20">
         <BookOpen size={28} /> 
       </div>
-      Education & Qualifications
+       Education qualification & experience
     </h3>
     <div className="space-y-10 border-l-2 border-blue-500/20 pl-8 ml-2">
       {EDUCATION_DATA.map((item, index) => (
